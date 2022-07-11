@@ -1,0 +1,69 @@
+#_________________________________________
+#                                        |
+#  Skript gemacht von DaLoL (devdalol)   |
+#                                        |
+#     Ban/Kick System Version 0.1        |
+#                                        |
+#                                        |
+#________________________________________|
+
+
+on join:
+    if player has permission "minecraft.command.op":
+        send "&6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &7Danke für das Benutzen vom Ban/Kick System von DaLoL (devdalol)!" to player
+
+on load:
+    send "ʙᴀɴɴsʏsᴛᴇᴍ » Skript Erfolgreich geladen"
+    wait 1 second
+    send "ʙᴀɴɴsʏsᴛᴇᴍ » Skript von DaLoL (devdalol)"
+
+
+
+
+
+
+
+
+command /ban [<offlineplayer>] [<text>]:
+    permission: ban.use
+    permission message: &6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &7Das darfst du nicht!
+    trigger:
+        if {ban.%uuid of arg 1%} is false:
+            if arg 2 is set:
+                send "&6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &7Du hast %arg-1% gebannt."
+                set {ban.%uuid of arg 1%} to true
+                set {ban.reason.%uuid of arg 1%} to arg-2
+                kick arg-1 due to "&c&lBanned &8» &7Du wurdest gebannt von %player%%nl%Grund: &c%{ban.reason.%uuid of arg 1%}%"
+                broadcast "&6&lʙᴀɴ &8» &a%arg-1% &7wurde gebannt von &a%player% &7für den Grund: &c%arg-2%"
+        else:
+            send "&6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &7Der Spieler exisitiert nicht oder ist schon gebannt."
+
+
+
+on connect:
+    if {ban.%uuid of player%} is not set:
+        set {ban.%uuid of player%} to false
+    else if {ban.%uuid of player%} is true:
+        kick player due to "&c&lBanned &8» &7Du wurdest gebannt von %player%%nl%Grund: &c%{ban.reason.%uuid of player%}%"
+
+
+
+
+
+command /unban [<offlineplayer>]:
+    permission: unban.use
+    permission message: &6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &7Das darfst du nicht! 
+    trigger:
+        if arg 1 is set:
+            if {ban.%uuid of arg 1%} is true:
+                delete {ban.%uuid of arg 1%}
+                send "&6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &7Du hast %arg 1% entbannt."
+            else:
+                send "&6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &7Dieser Spieler ist nicht gebannt."
+
+
+command /kick <player> <text>:
+	permission: kick.use 
+	trigger:
+		kick the player due to "&c&lKicked &8» &7Du wurdest geckickt von %player%%nl%Grund: &c%arg-2%"
+		broadcast "&e&lᴋɪᴄᴋsʏsᴛᴇᴍ &8» &a%arg-1% &7wurde Geckickt von &a%player% &7wegen &c%arg-2%"
