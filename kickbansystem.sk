@@ -34,7 +34,7 @@ command /ban [<offlineplayer>] [<text>]:
                 set {ban.%uuid of arg 1%} to true
                 set {ban.reason.%uuid of arg 1%} to arg-2
                 kick arg-1 due to "&c&lBanned &8» &7Du wurdest gebannt von %player%%nl%Grund: &c%{ban.reason.%uuid of arg 1%}%"
-                broadcast "&6&lʙᴀɴ &8» &a%arg-1% &7wurde gebannt von &a%player% &7für den Grund: &c%arg-2%"
+                broadcast "&6&lBan &8» &a%arg-1% &7wurde gebannt von &a%player% &7für den Grund: &c%arg-2%"
         else:
             send "&6&lʙᴀɴɴsʏsᴛᴇᴍ &8» &7Der Spieler exisitiert nicht oder ist schon gebannt."
 
@@ -66,4 +66,24 @@ command /kick <player> <text>:
 	permission: kick.use 
 	trigger:
 		kick the player due to "&c&lKicked &8» &7Du wurdest geckickt von %player%%nl%Grund: &c%arg-2%"
-		broadcast "&e&lᴋɪᴄᴋsʏsᴛᴇᴍ &8» &a%arg-1% &7wurde Geckickt von &a%player% &7wegen &c%arg-2%"
+		broadcast "&e&lKick &8» &a%arg-1% &7wurde Geckickt von &a%player% &7wegen &c%arg-2%"
+
+command /mute <player> <text>:
+    permission: mute.use
+    trigger:
+        if arg-1 is set:
+            set {mute.%uuid of arg-1%} to true
+            send "&6&lMute &8» &7Du hast &c%arg-1% &7gemuted."
+            broadcast "&6&lMute &8» &c%arg-1% &7wurde gemuted von &c%player% &7wegen &c%arg-2%&7."
+
+on chat:
+    if {mute.%uuid of player%} is true:
+        cancel the event
+        send "&6&lMute &8» &7Du bist Gemuted du kannst keine Nachrichten senden."
+
+command /unmute <player>:
+    permission: mute.use
+    trigger:
+        set {mute.%uuid of arg-1%} to false
+        send "&6&lMute &8» &7Du hast %arg-1% Erfolgreich entmudet."
+	
