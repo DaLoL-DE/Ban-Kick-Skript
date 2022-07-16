@@ -63,14 +63,10 @@ command /unban [<offlineplayer>]:
 
 
 command /kick <player> <text>:
-	permission: kick.use
-    usage: &e&lKick &8» &7Richtige benutzung -> &e/kick <Spieler> <Grund>&7. 
+	permission: kick.use 
 	trigger:
 		kick the player due to "&c&lKicked &8» &7Du wurdest geckickt von %player%%nl%Grund: &c%arg-2%"
 		broadcast "&e&lKick &8» &a%arg-1% &7wurde Geckickt von &a%player% &7wegen &c%arg-2%"
-
-
-
 
 command /mute <player> <text>:
     permission: mute.use
@@ -90,26 +86,4 @@ command /unmute <player>:
     trigger:
         set {mute.%uuid of arg-1%} to false
         send "&6&lMute &8» &7Du hast %arg-1% Erfolgreich entmudet."
-
-
-command /wartung <text>:
-    permission: wartung.use
-    usage: &8[&6Wartungssystem&8] &7Bitte benutze &e/wartung an/aus&7.
-    trigger:
-        if arg-1 is "an":
-            set {wartung::an} to true
-            send "&8[&7Wartungsystem&8] &7Die Wartungsarbeiten wurden gestartet."
-            wait 3 ticks
-            kick all players due to "&e&lWartung &8» &7Der Server ist nun in Wartungsarbeiten!%nl%Wir sind bald wieder Online."
-        if arg-1 is "off":
-            set {wartung::an} to false
-            send "&8[&6Wartungsystem&8] &7Die Wartungsarbeiten wurden deaktiviert." 
-
-on join:
-    if player doesn't have permission "wartung.bypass":
-        kick player due to "&6&lWartungen &8» &7Der Server befindet sich in Wartungsarbeiten%nl%Wir bitten um Geduld."
-
-
-on server ping:
-    if {wartung::an} is true:
-        set motd to "                 &6ʏᴏᴜʀsᴇʀᴠᴇʀ.ɴᴇᴛ%nl%              &4&lWartungsarbeiten"
+	
